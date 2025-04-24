@@ -1,0 +1,88 @@
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include <QMessageBox>
+#include <QDebug>
+
+extern "C" {
+    double train_network(const char *csv_path, int epochs, const char *plot_path);
+    int predict(double pm10, double so2, double co, double o3, double no2, const char *csv_path);
+}
+
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+    
+    plotLabel = new QLabel(this);
+    plotLabel->setAlignment(Qt::AlignCenter);
+    ui->plotScrollArea->setWidget(plotLabel);
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::on_trainButton_clicked()
+{
+    if (currentCsvPath.isEmpty()) {
+        QMessageBox::warning(this, "Warning", "Please import a CSV file first.");
+        return;
+    }
+    
+    int epochs = ui->epochSpinBox->value();
+    
+    double accuracy = train_network(
+        currentCsvPath.toUtf8().constData(), 
+        epochs,
+        currentPlotPath.toUtf8().constData()
+    );
+    
+    ui->accuracyLabel->setText(QString("Accuracy: %1%").arg(accuracy * 100, 0, 'f', 2));
+    
+    // Display the plot
+    QPixmap plot(currentPlotPath);
+    plotLabel->setPixmap(plot.scaled(ui->plotScrollArea->size(), Qt::KeepAspectRatio));
+}
+
+void MainWindow::on_importButton_clicked()
+{
+    QString filePath = QFileDialog::getOpenFileName(
+        this,
+        "Open CSV File",
+        "",
+        "CSV Files (*.csv);;All Files (*)"
+    );
+    
+    if (!filePath.isEmpty()) {
+        currentCsvPath = filePath;
+        ui->csvPathLabel->setText(QFileInfo(filePath).fileName());
+    }
+}
+
+void MainWindow::on_predictButton_clicked()
+{
+    if (currentCsvPath.isEmpty()) {
+        QMessageBox::warning(this, "Warning", "Please import a CSV file first.");
+        return;
+    }
+    
+    double pm10 = ui->pm10SpinBox->value();
+    double so2 = ui->so2SpinBox->value();
+    double co = ui->coSpinBox->value();
+    double o3 = ui->o3SpinBox->value();
+    double no2 = ui->no2SpinBox->value();
+    
+    int prediction = predict(pm10, so2, co, o3, no2, currentCsvPath.toUtf8().constData());
+    
+    QString result;
+    switch (prediction) {
+        case 0: result = "BAIK"; break;
+        case 1: result = "SEDANG"; break;
+        case 2: result = "TIDAK SEHAT"; break;
+        default: result = "UNKNOWN";
+    }
+    
+    ui->resultLabel->setText("Prediction: " + result);
+}

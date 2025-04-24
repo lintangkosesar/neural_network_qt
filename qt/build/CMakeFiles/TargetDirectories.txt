@@ -1,0 +1,4 @@
+/home/lintang/Coding/neural_network_qt/qt/build/CMakeFiles/QtNN.dir
+/home/lintang/Coding/neural_network_qt/qt/build/CMakeFiles/edit_cache.dir
+/home/lintang/Coding/neural_network_qt/qt/build/CMakeFiles/rebuild_cache.dir
+/home/lintang/Coding/neural_network_qt/qt/build/CMakeFiles/QtNN_autogen.dir
