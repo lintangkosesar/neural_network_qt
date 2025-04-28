@@ -1,5 +1,4 @@
 🌿 Air Quality Prediction using Artificial Neural Network (ANN)
-![alt text](https://github.com/lintangkosesar/neural_network_qt/blob/main/rustqt.jpg?raw=true)
 In this project, I built an ANN model to predict air quality categories ("Good", "Moderate", "Unhealthy") based on five input parameters: PM10, SO₂, CO, O₃, and NO₂ This proejct built by rust programming and QT builder GUI.
 This project is implemented in Rust because of its high performance, memory safety, easy integration with other systems, and excellent support for concurrency — making it ideal for fast and reliable machine learning applications.
 
