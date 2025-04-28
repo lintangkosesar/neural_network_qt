@@ -6,6 +6,7 @@ This project is implemented in Rust because of its high performance, memory safe
 2. Architecture: 5 input neurons, 3 hidden layers (each with 10 neurons), and 3 output neurons.
 3. Training settings: learning rate = 0.001, epochs = 1000.
 4. Achieved accuracy: around 90-98%.
+![alt text](https://github.com/lintangkosesar/neural_network_qt/blob/main/qt/build/training_plot.png?raw=true)
 5. This project also includes a Qt GUI to easily train the model and predict dummy data interactively.
 
 Feel free to explore the code and the GUI interface! 🚀
